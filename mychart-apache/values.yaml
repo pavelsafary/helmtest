@@ -1,0 +1,47 @@
+app: apache
+image: httpd:2.4
+nodeport: 32002
+application_port: 80
+resources:
+  limits:
+    memory: "128Mi"
+    cpu: "100m"
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+readinessProbe:
+  enabled: true
+  httpGet:
+    scheme: HTTP
+    path: /index.html
+    port: 80
+  periodSeconds: 5
+  timeoutSeconds: 1
+  successThreshold: 1 
+  failureThreshold: 3
+livenessProbe:
+  enabled: true
+  httpGet:
+    scheme: HTTP
+    path: /index.html
+    port: 80
+  periodSeconds: 5
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 3   
+startupProbe:
+  enabled: true
+  httpGet:
+    scheme: HTTP
+    path: /index.html
+    port: 80
+  failureThreshold: 30
+  periodSeconds: 10
+hpa:
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    resource:
+      name: cpu
+      targetAverageUtilization: 10
+

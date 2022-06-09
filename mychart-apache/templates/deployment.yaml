@@ -1,0 +1,45 @@
+apiVersion: apps/v1 # до версии 1.9.0 нужно использовать apps/v1beta2
+kind: Deployment
+metadata:
+  name: apache
+spec:
+  selector:
+    matchLabels:
+      app: apache
+  replicas: 1 # запускает 1 пода, созданных по шаблону
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - name: apache
+        image: {{ .Values.image }}
+        ports:
+        - containerPort: {{ .Values.application_port }}
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: {{ .Values.application_port }}
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: {{ .Values.application_port }}
+          periodSeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: {{ .Values.application_port }}
+          periodSeconds: 10
+          failureThreshold: 30
+
