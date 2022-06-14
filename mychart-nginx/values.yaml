@@ -1,5 +1,5 @@
 app: nginx
-image: pavelsafary/noviimoitest:latest
+image: nginx:1.14.2
 nodeport: 32007
 application_port: 80
 resources:
