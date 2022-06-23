@@ -1,5 +1,5 @@
 app: apache
-image: httpd:2.4
+image: pavelsafary/noviimoitest:latest
 nodeport: 32002
 application_port: 80
 #resources:
